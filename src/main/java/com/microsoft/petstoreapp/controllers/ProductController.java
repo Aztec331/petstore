@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.microsoft.petstoreapp.entities.Product;
 import com.microsoft.petstoreapp.services.ProductService;
 
-@RestController
+// @RestController
 public class ProductController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class ProductController {
     @RequestMapping(path = "/products", method = RequestMethod.POST)
     //@RequestBody annotation will convert the JSON data
     //coming in the request body into the object of the class Product
-    public ResponseEntity<String> addProduct(@RequestBody Product newProduct){
+    public ResponseEntity<?> addProduct(@RequestBody Product newProduct){
         return ResponseEntity.status(HttpStatus.CREATED) 
                              .body(this.service.addProduct(newProduct));
     }

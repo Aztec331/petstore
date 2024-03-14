@@ -2,43 +2,32 @@ package com.microsoft.petstoreapp.entities;
 
 import java.time.Instant;
 
-import org.hibernate.validator.constraints.Length;
+import javax.print.DocFlavor.STRING;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
-@Data
 @Entity
-// @Table(name= "tblProduct")
+@Data
 @EntityListeners(AuditingEntityListener.class)
-public class Product {
+public class Address {
     @Id
-    //we are telling the database to auto generate
-    //the unique id values
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
-    @Length(min = 3, max = 20, message = "product name should have 3-20 characters")
-    private String name;
-    @NotNull
-    @Min(value = 0)
-    @Max(value= 4000)
-    private Double price;
-    private String description;
+    private String city;
+    private String state;
+    private String country;
 
     @CreatedDate
     @Column(updatable = false)
@@ -46,4 +35,12 @@ public class Product {
     @LastModifiedDate
     private Instant updatedAt;
 
+    //one address belongs to only one user
+    //by default, spring boot will create the foreign key column
+    //that refers the id of the User in the address table too
+    //to avoid this we can use mappedBy property
+    @OneToOne(mappedBy = "addr")
+    private User user;
+
+    
 }

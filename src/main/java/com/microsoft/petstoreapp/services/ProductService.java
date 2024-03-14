@@ -6,41 +6,46 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.microsoft.petstoreapp.entities.Product;
+import com.microsoft.petstoreapp.repositories.ProductRepository;
 
 @Service
 public class ProductService {
-    private Map<Integer, Product> productMap = new HashMap<>();
-    private AtomicInteger atomic = new AtomicInteger();
 
-    public String addProduct(Product newProduct){
-        newProduct.setId(atomic.incrementAndGet());
-        productMap.put(newProduct.getId(), newProduct);
-        return "Product Added";
+    @Autowired
+    private ProductRepository repository;
+
+
+    // private Map<Integer, Product> productMap = new HashMap<>();
+    // private AtomicInteger atomic = new AtomicInteger();
+
+    //Create
+    public Product addProduct(Product newProduct){
+       return this.repository.save(newProduct);
     }
 
     //Read all
-    public List<Product> getAll(){
-        return new ArrayList<Product>(productMap.values());
+    public Iterable<Product> getAll(){
+        return this.repository.findAll();
     }
 
     //Read Single
     public Product getByID(Integer id){
-        return productMap.get(id);
+        return this.repository.findById(id).orElse(null);
     }
 
     //Delete
     public void deleteProduct(Integer id){
-        productMap.remove(id);
+        this.repository.deleteById(id);
     }
 
   //Update
   public Product updateProduct(Integer id, Product updatedProduct){
     updatedProduct.setId(id);
-    productMap.put(id, updatedProduct);
-    return productMap.get(id);
+    return this.repository.save(updatedProduct);
     }
     
 
