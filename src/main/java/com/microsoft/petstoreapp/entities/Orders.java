@@ -1,7 +1,7 @@
 package com.microsoft.petstoreapp.entities;
 
 import java.time.Instant;
-import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,27 +13,26 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class Category {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String name;
+    private LocalDate orderDate;
+
+    private LocalDate shippDate;
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(nullable = false,updatable = false)
     private Instant createdAt;
     @LastModifiedDate
     private Instant updatedAt;
+    
 
-    //one category can have many products
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
- 
+    
 }
